@@ -6,7 +6,7 @@
 #    By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/05 16:06:17 by mlitvino          #+#    #+#              #
-#    Updated: 2025/03/11 18:44:06 by mlitvino         ###   ########.fr        #
+#    Updated: 2025/03/11 20:19:40 by mlitvino         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,9 @@ INCLD_DIR = ./includes
 
 SRC = \
 		main.c check_args.c inits.c \
-		routine.c join_clean.c utils.c \
+		join_clean.c \
+		routine.c forks_acts.c \
+		utils.c \
 		\
 		\
 		\

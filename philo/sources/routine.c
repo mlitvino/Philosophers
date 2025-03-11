@@ -6,72 +6,33 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/11 19:43:23 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:33:56 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	die(t_philo *philo)
+{
+	printf("%lld %d died\n", cur_time(), philo->philo_id);
+}
+
 void	go_sleep(t_philo *philo)
 {
-
+	printf("%lld %d is sleeping\n", cur_time(), philo->philo_id);
+	usleep(philo->info->slp_time);
 }
 
 void	go_think(t_philo *philo, int hungry_time)
 {
-	int	time;
+	printf("%lld %d is thinking\n", cur_time(), philo->philo_id);
+	usleep(philo->info->slp_time); // FIX
 }
 
-int	take_fork(t_forks *forks, int fork_i)
+void	go_eat(t_philo *philo)
 {
-	int	res;
-
-	res = 0;
-	pthread_mutex_lock(&forks[fork_i].lock);
-	if (forks[fork_i].fork == 1)
-	{
-		forks[fork_i].fork == 0;
-		res = 1;
-	}
-	else
-		res = 0;
-	pthread_mutex_unlock(&forks[fork_i].lock);
-	return (res);
-}
-
-void	put_forks(t_philo *philo)
-{
-
-}
-
-// is_time_to_die?
-void	take_forks(t_philo *philo, struct timeval time)
-{
-	int ph_n;
-
-	ph_n = philo->philo_id + 1;
-	if (ph_n % 2 == 0)
-	{
-		while (take_fork(philo->forks, philo->left) != 1)
-			usleep(5);
-		gettimeofday(&time, NULL);
-		printf("%d %d has taken a fork\n", time.tv_usec / 1000, ph_n);
-		while (take_fork(philo->forks, philo->right) != 1)
-			usleep(5);
-		gettimeofday(&time, NULL);
-		printf("%d %d has taken a fork\n", time.tv_usec / 1000, ph_n);
-	}
-	else
-	{
-		while (take_fork(philo->forks, philo->right) != 1)
-			usleep(5);
-		gettimeofday(&time, NULL);
-		printf("%d %d has taken a fork\n", time.tv_usec / 1000, ph_n);
-		while (take_fork(philo->forks, philo->left) != 1)
-			usleep(5);
-		gettimeofday(&time, NULL);
-		printf("%d %d has taken a fork\n", time.tv_usec / 1000, ph_n);
-	}
+	printf("%lld %d is eating\n", cur_time(), philo->philo_id);
+	usleep(philo->info->eat_time);
 }
 
 int	routine(t_philo *philo)

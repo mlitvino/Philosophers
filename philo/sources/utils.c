@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:52:41 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/11 16:01:46 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:14:14 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,12 @@ int	ft_isspace(int x)
 {
 	return (x == '\n' || x == '\v' || x == '\t'
 		|| x == ' ' || x == '\f' || x == '\r');
+}
+
+long long	cur_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }

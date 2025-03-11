@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/11 19:09:01 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:27:21 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ long	safe_atoi(const char *str);
 long	convert_arg(char *argv);
 void	check_args(int argc, char *argv[], t_info *info);
 
+//forks_acts.c
+void	put_forks(t_philo *philo);
+int		take_fork(t_forks *forks, int fork_i);
+void	take_forks(t_philo *philo, struct timeval time);
+
 //inits.c
 t_forks	*init_forks(t_forks *forks, int max_philos);
 t_philo	*init_philos(t_philo *philos, t_forks *forks, t_info *info);
@@ -73,6 +78,7 @@ int		routine(t_philo *philo);
 void	error(char *message);
 int		ft_strlen(char *message);
 int		ft_isspace(int x);
+long long	cur_time(void);
 
 //DEL.c
 #define Me 4
