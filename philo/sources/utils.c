@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 12:52:41 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/11 20:14:14 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/11 23:39:40 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	error(char *message)
 {
 	write(2, message, ft_strlen(message));
 	write(1, "\n", 1);
-	exit(1);
 }
 
 int	ft_strlen(char *message)

@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:10:11 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/11 20:03:29 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/12 00:03:49 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,18 @@ int	main(int argc, char *argv[])
 
 	forks = NULL;
 	philos = NULL;
-	usleep(4);
 	if (argc < 5)
-		error("Error: wrong format");
-	check_args(argc, argv, &info);
+		return (error("Error: wrong format"), -1);
+	if (check_args(argc, argv, &info) == -1)
+		return (error("Error: invalid argument"), -1);
 	forks = init_forks(forks, info.max_philos);
+	if (!forks)
+		return (-1);
 	philos = init_philos(philos, forks, &info);
-	create_philos(philos, &info);
+	if (!philos)
+		return (-1);
+	if (create_philos(philos, &info) == -1)
+		return (-1);
 	join_clean(philos, &info);
 	return (0);
 }

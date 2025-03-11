@@ -6,12 +6,12 @@
 #    By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/05 16:06:17 by mlitvino          #+#    #+#              #
-#    Updated: 2025/03/11 20:19:40 by mlitvino         ###   ########.fr        #
+#    Updated: 2025/03/12 00:03:05 by mlitvino         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -I$(INCLD_DIR) -pthread
+CFLAGS = -I$(INCLD_DIR) -pthread -Wall -Wextra -Werror
 # -Wall -Wextra -Werror
 
 NAME = philo

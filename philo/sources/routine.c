@@ -6,51 +6,66 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/11 20:33:56 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/12 00:09:14 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	die(t_philo *philo)
+int	die(t_philo *philo)
 {
 	printf("%lld %d died\n", cur_time(), philo->philo_id);
+	return (0);
 }
 
-void	go_sleep(t_philo *philo)
+int	go_sleep(t_philo *philo)
 {
 	printf("%lld %d is sleeping\n", cur_time(), philo->philo_id);
 	usleep(philo->info->slp_time);
+	return (0);
 }
 
-void	go_think(t_philo *philo, int hungry_time)
+int	go_think(t_philo *philo, int hungry_time)
 {
+	long long time;
+
 	printf("%lld %d is thinking\n", cur_time(), philo->philo_id);
-	usleep(philo->info->slp_time); // FIX
+	time = philo->info->dth_time - cur_time() - hungry_time;
+	if (time < 0)
+		time = 0;
+	usleep(time); // FIX, must die
+	return (0);
 }
 
-void	go_eat(t_philo *philo)
+int	go_eat(t_philo *philo)
 {
 	printf("%lld %d is eating\n", cur_time(), philo->philo_id);
 	usleep(philo->info->eat_time);
+	return (0);
 }
 
-int	routine(t_philo *philo)
+void	*routine(void *new)
 {
-	int		my_meals;
-	int		hungry_time;
-	struct	timeval time;
+	int			my_meals;
+	long long	hungry_time;
+	t_philo *philo = (t_philo *)new;
 
+	//printf("live\n"); del
 	my_meals = philo->info->meals;
+	hungry_time = cur_time();
 	while (philo->info->stop_flag == 0 || my_meals > 0)
 	{
-		gettimeofday(&time, NULL);
-		hungry_time = time.tv_usec;
-		take_forks(philo, time);
-		go_eat(philo);
-		put_forks(philo);
-		go_sleep(philo);
-		go_think(philo, hungry_time);
+		if (take_forks(philo) == -1)
+			return (0);
+		if (go_eat(philo) == -1)
+			return (0);
+		if (put_forks(philo) == -1)
+			return (0);
+		my_meals--;
+		if (go_sleep(philo) == -1)
+			return (0);
+		if (go_think(philo, hungry_time) == -1)
+			return (0);
 	}
 	return (0);
 }

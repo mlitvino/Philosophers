@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:34:11 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/11 17:58:44 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/11 22:37:10 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	join_clean(t_philo *philos, t_info *info)
 	int	i;
 
 	i = 0;
+	printf("here \n");//del
 	while (i < info->max_philos)
 	{
 		pthread_join(philos[i].philo_th, NULL);
