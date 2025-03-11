@@ -1,36 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 15:27:55 by mlitvino          #+#    #+#             */
-/*   Updated: 2024/11/04 13:52:52 by mlitvino         ###   ########.fr       */
+/*   Created: 2025/03/11 12:52:41 by mlitvino          #+#    #+#             */
+/*   Updated: 2025/03/11 16:01:46 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+void	error(char *message)
 {
-	size_t	src_l;
-	size_t	i;
+	write(2, message, ft_strlen(message));
+	write(1, "\n", 1);
+	exit(1);
+}
 
-	i = 0;
-	src_l = 0;
-	while (src[src_l])
-	{
-		src_l++;
-	}
-	if (size > 0)
-	{
-		while (src[i] && i < (size - 1))
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	return (src_l);
+int	ft_strlen(char *message)
+{
+	int	res;
+
+	res = 0;
+	while (message[res])
+		res++;
+	return (res);
+}
+
+int	ft_isspace(int x)
+{
+	return (x == '\n' || x == '\v' || x == '\t'
+		|| x == ' ' || x == '\f' || x == '\r');
 }
