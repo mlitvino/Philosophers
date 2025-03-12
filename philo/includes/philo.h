@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/12 00:07:32 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:22:25 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,25 @@ typedef struct s_info
 
 typedef struct s_philo
 {
-	t_info		*info;
-	t_forks		*forks;
+	t_info			*info;
+	t_forks			*forks;
 
-	pthread_t	philo_th;
-	int			philo_id;
+	pthread_t		philo_th;
+	int				philo_id;
 
-	int			left;
-	int			right;
+	int				left;
+	bool			flg_left;
+	int				right;
+	bool			flg_rigt;
+
+	long long		dth_date;
+	long long		eat_date;
+	struct timeval	time;
+
+	long long		temp_time;
+
+	struct timeval	str_time;
+	long long		cur_time;
 }	t_philo;
 
 //check_args.c
@@ -74,6 +85,7 @@ void	join_clean(t_philo *philos, t_info *info);
 int		main(int argc, char *argv[]);
 
 //routine.c
+int		is_died(t_philo *philo);
 void	*routine(void *philo);
 
 //utils.c

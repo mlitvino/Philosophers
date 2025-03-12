@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/12 00:04:34 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:44:46 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	create_philos(t_philo *philos, t_info *info)
 	while (i < info->max_philos)
 	{
 		res = pthread_create(&philos[i].philo_th, NULL, routine, (void *)&philos[i]);
-		printf("%d res\n", res); //DEL
+		//printf("%d res\n", res); //DEL
 		if (res != 0)
 		{
 			info->stop_flag = 1;
