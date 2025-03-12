@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/12 16:22:25 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/12 18:21:37 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,56 +48,51 @@ typedef struct s_philo
 	int				philo_id;
 
 	int				left;
-	bool			flg_left;
 	int				right;
-	bool			flg_rigt;
 
 	long long		dth_date;
 	long long		eat_date;
-	struct timeval	time;
+	struct timeval	tv;
 
 	long long		temp_time;
-
-	struct timeval	str_time;
-	long long		cur_time;
 }	t_philo;
 
 //check_args.c
-long	safe_atoi(const char *str);
-long	convert_arg(char *argv);
-int		check_args(int argc, char *argv[], t_info *info);
+long		safe_atoi(const char *str);
+long		convert_arg(char *argv);
+int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
-int		put_forks(t_philo *philo);
-int		take_fork(t_forks *forks, int fork_i, t_philo *philo);
-int		take_forks(t_philo *philo);
+int			put_forks(t_philo *philo);
+int			chck_grap_fork(t_philo *philo, t_forks *forks);
+int			take_forks(t_philo *philo);
 
 //inits.c
-t_forks	*init_forks(t_forks *forks, int max_philos);
-t_philo	*init_philos(t_philo *philos, t_forks *forks, t_info *info);
-int		create_philos(t_philo *philos, t_info *info);
+t_forks		*init_forks(t_forks *forks, int max_philos);
+t_philo		*init_philos(t_philo *philos, t_forks *forks, t_info *info);
+int			create_philos(t_philo *philos, t_info *info);
 
 //join_ckean.c
-void	destroy_mutex(t_forks *forks, int max_i);
-void	join_clean(t_philo *philos, t_info *info);
+void		destroy_mutex(t_forks *forks, int max_i);
+void		join_clean(t_philo *philos, t_info *info);
 
 //main.c
-int		main(int argc, char *argv[]);
+int			main(int argc, char *argv[]);
 
 //routine.c
-int		is_died(t_philo *philo);
-void	*routine(void *philo);
+int			is_died(t_philo *philo);
+void		*routine(void *philo);
 
 //utils.c
-void	error(char *message);
-int		ft_strlen(char *message);
-int		ft_isspace(int x);
-long long	cur_time(void);
+void		error(char *message);
+int			ft_strlen(char *message);
+int			ft_isspace(int x);
+long long	cur_time(struct timeval	*tv);
 
 //DEL.c
 #define Me 4
-void	notake_fork(t_philo *philos);
-void	see_all(t_philo *philos);
-void	*test(void *new);
+void		notake_fork(t_philo *philos);
+void		see_all(t_philo *philos);
+void		*test(void *new);
 
 #endif
