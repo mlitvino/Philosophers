@@ -1,0 +1,154 @@
+1741779756995 1 is sleeping
+1741779756996 2 is sleeping
+1741779756996 3 is sleeping
+1741779756996 4 is sleeping
+1741779757196 3 is thinking
+1741779757196 2 is thinking
+1741779757196 1 is thinking
+1741779757197 4 is thinking
+1741779757198 3 has taken a fork
+1741779757198 3 has taken a fork
+1741779757198 3 is eating
+1741779757198 2 has taken a fork
+1741779757398 3 put a fork down
+1741779757398 3 put a fork down
+1741779757398 3 is sleeping
+1741779757398 2 has taken a fork
+1741779757398 2 is eating
+1741779757398 4 has taken a fork
+1741779757398 4 has taken a fork
+1741779757398 4 is eating
+1741779757598 2 put a fork down
+1741779757598 2 put a fork down
+1741779757598 2 is sleeping
+1741779757598 1 has taken a fork
+1741779757598 4 put a fork down
+1741779757598 1 died
+1741779757598 4 put a fork down
+1741779757598 4 is sleeping
+1741779757599 3 is thinking
+1741779757600 3 has taken a fork
+1741779757600 3 has taken a fork
+1741779757600 3 is eating
+1741779757799 2 is thinking
+1741779757799 4 is thinking
+1741779757801 3 put a fork down
+1741779757801 3 put a fork down
+1741779757801 3 is sleeping
+1741779757801 4 has taken a fork
+1741779757801 4 has taken a fork
+1741779757801 4 is eating
+1741779757808 2 died
+1741779758002 4 put a fork down
+1741779758002 4 put a fork down
+1741779758002 4 is sleeping
+1741779758002 3 is thinking
+1741779758004 3 has taken a fork
+1741779758004 3 has taken a fork
+1741779758004 3 is eating
+1741779758202 4 is thinking
+1741779758204 3 put a fork down
+1741779758204 3 put a fork down
+1741779758204 3 is sleeping
+1741779758204 4 has taken a fork
+1741779758204 4 has taken a fork
+1741779758204 4 is eating
+1741779758404 3 is thinking
+1741779758404 4 put a fork down
+1741779758404 4 put a fork down
+1741779758404 4 is sleeping
+1741779758406 3 has taken a fork
+1741779758406 3 has taken a fork
+1741779758406 3 is eating
+1741779758605 4 is thinking
+1741779758606 3 put a fork down
+1741779758606 3 put a fork down
+1741779758606 3 is sleeping
+1741779758606 4 has taken a fork
+1741779758606 4 has taken a fork
+1741779758606 4 is eating
+1741779758807 3 is thinking
+1741779758807 4 put a fork down
+1741779758807 4 put a fork down
+1741779758807 4 is sleeping
+1741779758808 3 has taken a fork
+1741779758808 3 has taken a fork
+1741779758808 3 is eating
+1741779759007 4 is thinking
+1741779759009 3 put a fork down
+1741779759009 3 put a fork down
+1741779759009 3 is sleeping
+1741779759009 4 has taken a fork
+1741779759009 4 has taken a fork
+1741779759009 4 is eating
+1741779759209 3 is thinking
+1741779759210 4 put a fork down
+1741779759210 4 put a fork down
+1741779759210 4 is sleeping
+1741779759211 3 has taken a fork
+1741779759211 3 has taken a fork
+1741779759211 3 is eating
+1741779759410 4 is thinking
+1741779759411 3 put a fork down
+1741779759411 3 put a fork down
+1741779759411 3 is sleeping
+1741779759412 4 has taken a fork
+1741779759412 4 has taken a fork
+1741779759412 4 is eating
+1741779759611 3 is thinking
+1741779759612 4 put a fork down
+1741779759612 4 put a fork down
+1741779759612 4 is sleeping
+1741779759613 3 has taken a fork
+1741779759613 3 has taken a fork
+1741779759613 3 is eating
+1741779759812 4 is thinking
+1741779759813 3 put a fork down
+1741779759813 3 put a fork down
+1741779759813 3 is sleeping
+1741779759814 4 has taken a fork
+1741779759814 4 has taken a fork
+1741779759814 4 is eating
+1741779760013 3 is thinking
+1741779760014 4 put a fork down
+1741779760014 4 put a fork down
+1741779760014 4 is sleeping
+1741779760015 3 has taken a fork
+1741779760015 3 has taken a fork
+1741779760015 3 is eating
+1741779760214 4 is thinking
+1741779760215 3 put a fork down
+1741779760215 3 put a fork down
+1741779760215 3 is sleeping
+1741779760216 4 has taken a fork
+1741779760216 4 has taken a fork
+1741779760216 4 is eating
+1741779760415 3 is thinking
+1741779760416 4 put a fork down
+1741779760416 4 put a fork down
+1741779760416 4 is sleeping
+1741779760417 3 has taken a fork
+1741779760417 3 has taken a fork
+1741779760417 3 is eating
+1741779760616 4 is thinking
+1741779760617 3 put a fork down
+1741779760617 3 put a fork down
+1741779760617 3 is sleeping
+1741779760618 4 has taken a fork
+1741779760618 4 has taken a fork
+1741779760618 4 is eating
+1741779760817 3 is thinking
+1741779760818 4 put a fork down
+1741779760818 4 put a fork down
+1741779760818 4 is sleeping
+1741779760819 3 has taken a fork
+1741779760819 3 has taken a fork
+1741779760819 3 is eating
+1741779761018 4 is thinking
+1741779761019 3 put a fork down
+1741779761019 3 put a fork down
+1741779761020 4 has taken a fork
+1741779761020 4 has taken a fork
+1741779761020 4 is eating
+1741779761220 4 put a fork down
+1741779761220 4 put a fork down
