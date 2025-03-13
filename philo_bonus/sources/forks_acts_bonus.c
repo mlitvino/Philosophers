@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 16:32:51 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:22:53 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 				return (0);
 */
 
-// int	chck_grap_fork(t_philo *philo, sem_t *forks, int first, int second)
+// int	chck_grap_fork(t_philo *philo, t_my_sem *forks, int first, int second)
 // {
 // 	int	res;
 
@@ -52,27 +52,33 @@
 // 	return (res);
 // }
 
-int	put_forks(t_philo *philo, sem_t *forks)
+int	put_forks(t_philo *philo, t_my_sem *forks)
 {
-	sem_post(forks);
+	sem_post(forks->forks);
 	printf("%lld %d put a fork down\n", cur_time(&philo->tv), philo->philo_i);
-	sem_post(forks);
+	sem_post(forks->forks);
 	printf("%lld %d put a fork down\n", cur_time(&philo->tv), philo->philo_i);
 	is_dead(philo);
 	return (0);
 }
 
-void	chck_grap_fork(t_philo *philo, sem_t *forks)
+int	chck_grap_fork(t_philo *philo, t_my_sem *forks)
 {
-	sem_wait(forks);
+	//printf("graps\n"); //del
+	sem_wait(forks->lock);
+	//printf("grapsSSSS\n"); //del
+	sem_wait(forks->forks);
 	printf("%lld %d has taken a fork\n", cur_time(&philo->tv), philo->philo_i);
-	sem_wait(forks);
+	sem_wait(forks->forks);
 	printf("%lld %d has taken a fork\n", cur_time(&philo->tv), philo->philo_i);
+	sem_post(forks->lock);
+	//printf("sucsess\n"); //del
+	return (1);
 }
 
-int	take_forks(t_philo *philo, sem_t *forks)
+int	take_forks(t_philo *philo, t_my_sem *forks, t_info *info)
 {
-	while (philo->left == philo->right)
+	while (info->max_philos == 1)
 		is_dead(philo);
 	if (philo->philo_i % 2 == 0)
 	{
@@ -80,7 +86,8 @@ int	take_forks(t_philo *philo, sem_t *forks)
 		{
 			usleep(1000);
 			is_dead(philo);
-			chck_grap_fork(philo, forks);
+			if (chck_grap_fork(philo, forks) == 1)
+				return (0);
 		}
 	}
 	else
@@ -89,14 +96,9 @@ int	take_forks(t_philo *philo, sem_t *forks)
 		{
 			usleep(1000);
 			is_dead(philo);
-			chck_grap_fork(philo, forks);
+			if (chck_grap_fork(philo, forks) == 1)
+				return (0);
 		}
 	}
 	return (0);
 }
-
-
-
-
-
-

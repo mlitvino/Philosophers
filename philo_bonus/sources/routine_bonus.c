@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 16:24:26 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:50:14 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	go_eat(t_philo *philo, t_info *info)
 	return (0);
 }
 
-void	routine(t_philo *philo, t_info *info, sem_t *forks)
+int	routine(t_philo *philo, t_info *info, t_my_sem *forks)
 {
 	int	my_meals;
 
@@ -71,10 +71,13 @@ void	routine(t_philo *philo, t_info *info, sem_t *forks)
 	{
 		go_sleep(philo, info);
 		go_think(philo);
-		take_forks(philo, forks);
+		take_forks(philo, forks, info);
 		go_eat(philo, info);
 		put_forks(philo, forks);
 	}
 	printf("%lld %d has done\n", cur_time(&philo->tv), philo->philo_i);
-	return (0);
+	sem_close(forks->forks);
+	sem_close(forks->lock);
+	free(philo->other);
+	exit(0);
 }

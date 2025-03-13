@@ -6,13 +6,12 @@
 #    By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/05 16:06:17 by mlitvino          #+#    #+#              #
-#    Updated: 2025/03/13 15:34:17 by mlitvino         ###   ########.fr        #
+#    Updated: 2025/03/13 23:05:22 by mlitvino         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -I$(INCLD_DIR) -pthread -Wall -Wextra -Werror
-# -Wall -Wextra -Werror
 
 NAME = philo_bonus
 
@@ -21,10 +20,9 @@ OBJ_DIR = ./objects
 LIBFT_DIR = ./libft
 INCLD_DIR = ./includes
 
-
-# routine_bonus.c forks_acts_bonus.c
 SRC = \
 		main_bonus.c check_args_bonus.c inits_bonus.c \
+		routine_bonus.c forks_acts_bonus.c \
 		wait_clean_bonus.c \
 		utils_bonus.c \
 		\

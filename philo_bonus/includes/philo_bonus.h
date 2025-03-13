@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 16:33:16 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:45:02 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 
 typedef struct s_my_sem
 {
-	const char	*name;
-	sem_t		*forks;
+	sem_t	*forks;
+	sem_t	*lock;
 }	t_my_sem;
 
 typedef struct s_info
@@ -51,11 +51,12 @@ typedef struct s_info
 
 typedef struct s_philo
 {
+	struct s_philo	*other;
 	pid_t			philo_pid;
 	int				philo_i;
 
-	int				left;
-	int				right;
+	int				left;//del
+	int				right;//del
 
 	long long		dth_date;
 	long long		eat_date;
@@ -70,20 +71,21 @@ long		convert_arg(char *argv);
 int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
-int		put_forks(t_philo *philo, sem_t *forks);
-void	chck_grap_fork(t_philo *philo, sem_t *forks);
-int		take_forks(t_philo *philo, sem_t *forks);
+int			put_forks(t_philo *philo, t_my_sem *forks);
+int			chck_grap_fork(t_philo *philo, t_my_sem *forks);
+int			take_forks(t_philo *philo, t_my_sem *forks, t_info *info);
 
 //inits.c
-t_philo		*init_philos(t_philo *philos, sem_t *forks, t_info *info);
-int			create_philos(t_philo *philos, t_info *info, sem_t *forks);
+void		init_sem(t_my_sem *forks, t_info *info);
+t_philo		*init_philos(t_philo *philos, t_my_sem *forks, t_info *info);
+int			create_philos(t_philo *philos, t_info *info, t_my_sem *forks);
 
 //main.c
 int			main(int argc, char *argv[]);
 
 //routine.c
 int			is_dead(t_philo *philo);
-void		routine(t_philo *philo, t_info *info, sem_t *forks);
+int			routine(t_philo *philo, t_info *info, t_my_sem *forks);
 
 //utils.c
 void		error(char *message);
@@ -92,8 +94,8 @@ int			ft_isspace(int x);
 long long	cur_time(struct timeval	*tv);
 
 //wait_ckean.c
-void		err_clean(t_philo *philos, sem_t *forks, int max_philos);
-void		wait_clean(t_philo *philos, sem_t *forks, int max_philos);
+void		err_clean(t_philo *philos, t_my_sem *forks, int max_philos);
+void		wait_clean(t_philo *philos, t_my_sem *forks, int max_philos);
 
 //DEL.c
 #define Me 4
