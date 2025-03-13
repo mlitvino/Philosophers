@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/12 18:21:37 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:19:13 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
 int			put_forks(t_philo *philo);
-int			chck_grap_fork(t_philo *philo, t_forks *forks);
-int			take_forks(t_philo *philo);
+int			chck_grap_fork(t_philo *philo, t_forks *forks, int left, int right);
+int			take_forks(t_philo *philo, t_forks *forks);
 
 //inits.c
 t_forks		*init_forks(t_forks *forks, int max_philos);

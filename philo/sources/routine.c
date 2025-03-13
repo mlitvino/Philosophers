@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/12 20:31:31 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:19:36 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	*routine(void *new)
 			return (0);
 		// if (go_think(philo) == -1)
 		// 	return (0);
-		if (take_forks(philo) == -1)
+		if (take_forks(philo, philo->forks) == -1)
 			return (0);
 		if (go_eat(philo, philo->info) == -1)
 			return (0);
