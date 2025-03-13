@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 12:19:13 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:20:54 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void		join_clean(t_philo *philos, t_info *info);
 int			main(int argc, char *argv[]);
 
 //routine.c
-int			is_died(t_philo *philo);
+int			is_dead(t_philo *philo);
 void		*routine(void *philo);
 
 //utils.c

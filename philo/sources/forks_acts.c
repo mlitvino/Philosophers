@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 12:45:57 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:20:50 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@
 // 	if (philo->philo_id % 2 == 0)
 // 	{
 // 		while (chck_grap_fork(philo->forks, philo->left, philo) != 1)
-// 			if (!usleep(1000) && is_died(philo) == -1)
+// 			if (!usleep(1000) && is_dead(philo) == -1)
 // 				return (-1);
 // 		while (chck_grap_fork(philo->forks, philo->right, philo) != 1)
-// 			if (!usleep(1000) && is_died(philo) == -1)
+// 			if (!usleep(1000) && is_dead(philo) == -1)
 // 				return (-1);
 // 	}
 // 	else
 // 	{
 // 		while (chck_grap_fork(philo->forks, philo->right, philo) != 1)
-// 			if (!usleep(1000) && is_died(philo) == -1)
+// 			if (!usleep(1000) && is_dead(philo) == -1)
 // 				return (-1);
 // 		while (chck_grap_fork(philo->forks, philo->left, philo) != 1)
-// 			if (!usleep(1000) && is_died(philo) == -1)
+// 			if (!usleep(1000) && is_dead(philo) == -1)
 // 				return (-1);
 // 	}
 // 	return (0);
@@ -67,7 +67,7 @@ int	put_forks(t_philo *philo)
 	printf("%lld %d put a fork down\n", philo->temp_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->forks[philo->right].lock);
 	pthread_mutex_unlock(&philo->forks[philo->left].lock);
-	if (is_died(philo) == -1)
+	if (is_dead(philo) == -1)
 		return (-1);
 	return (0);
 }
@@ -75,13 +75,13 @@ int	put_forks(t_philo *philo)
 int	take_forks(t_philo *philo, t_forks *forks)
 {
 	while (philo->left == philo->right)
-		if (is_died(philo) == -1)
+		if (is_dead(philo) == -1)
 			return (-1);
 	if (philo->philo_id % 2 == 0)
 	{
 		while (1)
 		{
-			if (!usleep(1) && is_died(philo) == -1)
+			if (!usleep(1) && is_dead(philo) == -1)
 				return (-1);
 			if (chck_grap_fork(philo, forks, philo->left, philo->right) == 1)
 				return (0);
@@ -91,7 +91,7 @@ int	take_forks(t_philo *philo, t_forks *forks)
 	{
 		while (1)
 		{
-			if (!usleep(1) && is_died(philo) == -1)
+			if (!usleep(1) && is_dead(philo) == -1)
 				return (-1);
 			if (chck_grap_fork(philo, forks, philo->right, philo->left) == 1)
 				return (0);

@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 13:09:44 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:33:16 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,17 @@
 # include <sys/wait.h>
 
 # include <semaphore.h>
+# include <fcntl.h>
+# include <sys/stat.h>
 
+//#define _POSIX_C_SOURCE
+#include <signal.h>
 
-typedef struct s_forks
+typedef struct s_my_sem
 {
-	bool			fork;
-	pthread_mutex_t	lock;
-}	t_forks;
+	const char	*name;
+	sem_t		*forks;
+}	t_my_sem;
 
 typedef struct s_info
 {
@@ -47,11 +51,8 @@ typedef struct s_info
 
 typedef struct s_philo
 {
-	t_info			*info;
-	t_forks			*forks;
-
-	pthread_t		philo_th;
-	int				philo_id;
+	pid_t			philo_pid;
+	int				philo_i;
 
 	int				left;
 	int				right;
@@ -69,31 +70,30 @@ long		convert_arg(char *argv);
 int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
-int			put_forks(t_philo *philo);
-int			chck_grap_fork(t_philo *philo, t_forks *forks);
-int			take_forks(t_philo *philo);
+int		put_forks(t_philo *philo, sem_t *forks);
+void	chck_grap_fork(t_philo *philo, sem_t *forks);
+int		take_forks(t_philo *philo, sem_t *forks);
 
 //inits.c
-t_forks		*init_forks(t_forks *forks, int max_philos);
-t_philo		*init_philos(t_philo *philos, t_forks *forks, t_info *info);
-int			create_philos(t_philo *philos, t_info *info);
-
-//join_ckean.c
-void		destroy_mutex(t_forks *forks, int max_i);
-void		join_clean(t_philo *philos, t_info *info);
+t_philo		*init_philos(t_philo *philos, sem_t *forks, t_info *info);
+int			create_philos(t_philo *philos, t_info *info, sem_t *forks);
 
 //main.c
 int			main(int argc, char *argv[]);
 
 //routine.c
-int			is_died(t_philo *philo);
-void		*routine(void *philo);
+int			is_dead(t_philo *philo);
+void		routine(t_philo *philo, t_info *info, sem_t *forks);
 
 //utils.c
 void		error(char *message);
 int			ft_strlen(char *message);
 int			ft_isspace(int x);
 long long	cur_time(struct timeval	*tv);
+
+//wait_ckean.c
+void		err_clean(t_philo *philos, sem_t *forks, int max_philos);
+void		wait_clean(t_philo *philos, sem_t *forks, int max_philos);
 
 //DEL.c
 #define Me 4
