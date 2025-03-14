@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 23:50:14 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:45:59 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	go_think(t_philo *philo)
 	// philo->eat_date = (philo->time.tv_sec * 1000) + (philo->time.tv_usec / 1000);
 	// philo->eat_date = philo->dth_date - philo->eat_date + 15;
 	// if (philo->eat_date >= 0)
-		usleep(1000);
+		//usleep(1000);
 	// else
 	// 	usleep(-philo->eat_date);
 	return (0);
@@ -50,10 +50,18 @@ int	is_dead(t_philo *philo)
 	return (0);
 }
 
-int	go_eat(t_philo *philo, t_info *info)
+int	go_eat(t_philo *philo, t_info *info, t_my_sem *forks)
 {
-	is_dead(philo);
 	philo->eat_date = cur_time(&philo->tv);
+	if (philo->eat_date >= philo->dth_date)
+	{
+		sem_post(forks->forks);
+		printf("%lld %d put a fork down\n", philo->eat_date, philo->philo_i);
+		sem_post(forks->forks);
+		printf("%lld %d put a fork down\n", philo->eat_date, philo->philo_i);
+		printf("%lld %d died\n", philo->eat_date, philo->philo_i);
+		exit(1);
+	}
 	printf("%lld %d is eating\n", philo->eat_date, philo->philo_i);
 	usleep(info->eat_time * 1000);
 	philo->dth_date = philo->eat_date + info->dth_time;
@@ -72,7 +80,7 @@ int	routine(t_philo *philo, t_info *info, t_my_sem *forks)
 		go_sleep(philo, info);
 		go_think(philo);
 		take_forks(philo, forks, info);
-		go_eat(philo, info);
+		go_eat(philo, info, forks);
 		put_forks(philo, forks);
 	}
 	printf("%lld %d has done\n", cur_time(&philo->tv), philo->philo_i);

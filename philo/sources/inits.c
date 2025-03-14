@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/12 12:44:46 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/14 16:29:13 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ t_philo	*init_philos(t_philo *philos, t_forks *forks, t_info *info)
 	return (philos);
 }
 
-t_forks	*init_forks(t_forks *forks, int max_philos)
+t_forks	*init_forks(t_info *info, t_forks *forks, int max_philos)
 {
 	int	i;
 	int	res;
 
+	if (pthread_mutex_init(&info->print_lock, NULL) != 0)
+		return (error("Error: mutex failed init"), NULL);
 	forks = malloc(sizeof(t_forks) * max_philos);
 	if (!forks)
 		return (error("Error: malloc failed in init_forks"), NULL);
@@ -47,7 +49,7 @@ t_forks	*init_forks(t_forks *forks, int max_philos)
 	while (i < max_philos)
 	{
 		forks[i].fork = 1;
-		res = pthread_mutex_init(&forks[i].lock, NULL);
+		res = pthread_mutex_init(&forks[i].fork_lock, NULL);
 		if (res != 0)
 		{
 			destroy_mutex(forks, i);
@@ -68,7 +70,6 @@ int	create_philos(t_philo *philos, t_info *info)
 	while (i < info->max_philos)
 	{
 		res = pthread_create(&philos[i].philo_th, NULL, routine, (void *)&philos[i]);
-		//printf("%d res\n", res); //DEL
 		if (res != 0)
 		{
 			info->stop_flag = 1;

@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/13 16:20:54 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/14 17:06:12 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,20 @@
 typedef struct s_forks
 {
 	bool			fork;
-	pthread_mutex_t	lock;
+	pthread_mutex_t	fork_lock;
 }	t_forks;
 
 typedef struct s_info
 {
-	int		max_philos;
-	int		dth_time;
-	int		eat_time;
-	int		slp_time;
-	int		meals;
-	bool	stop_flag;
+	int				max_philos;
+	long long		dth_time;
+	long long		eat_time;
+	long long		slp_time;
+	int				meals;
+	bool			stop_flag;
+
+	pthread_mutex_t	print_lock;
+	bool			death;
 }	t_info;
 
 typedef struct s_philo
@@ -51,10 +54,8 @@ typedef struct s_philo
 	int				right;
 
 	long long		dth_date;
-	long long		eat_date;
-	struct timeval	tv;
-
 	long long		temp_time;
+	struct timeval	tv;
 }	t_philo;
 
 //check_args.c
@@ -68,7 +69,7 @@ int			chck_grap_fork(t_philo *philo, t_forks *forks, int left, int right);
 int			take_forks(t_philo *philo, t_forks *forks);
 
 //inits.c
-t_forks		*init_forks(t_forks *forks, int max_philos);
+t_forks		*init_forks(t_info *info, t_forks *forks, int max_philos);
 t_philo		*init_philos(t_philo *philos, t_forks *forks, t_info *info);
 int			create_philos(t_philo *philos, t_info *info);
 
@@ -80,7 +81,7 @@ void		join_clean(t_philo *philos, t_info *info);
 int			main(int argc, char *argv[]);
 
 //routine.c
-int			is_dead(t_philo *philo);
+int			is_dead(t_philo *philo, t_info *info);
 void		*routine(void *philo);
 
 //utils.c
@@ -88,6 +89,8 @@ void		error(char *message);
 int			ft_strlen(char *message);
 int			ft_isspace(int x);
 long long	cur_time(struct timeval	*tv);
+long long	get_msec(struct timeval	*tv);
+long long	get_usec(struct timeval	*tv);
 
 //DEL.c
 #define Me 4
