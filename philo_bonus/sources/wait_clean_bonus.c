@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:34:11 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 00:33:17 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 01:07:28 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	wait_clean(t_philo *philos, t_my_sem *forks, int max_philos)
 		res = waitpid(0, &status, 0);
 		if (res != -1 && WIFEXITED(status) && WEXITSTATUS(status) == 1)
 		{
-			usleep(philos->info->dth_time);
+			usleep(philos->info->dth_time * 2);
 			sem_post(forks->print);
 		}
 		i++;

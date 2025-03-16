@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 00:30:59 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 01:00:55 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	go_think(t_philo *philo)
 
 int	is_dead(t_philo *philo, int mod)
 {
-	philo->check_time = get_usec(&philo->tv);
+	//philo->check_time = get_usec(&philo->tv);
 	sem_wait(philo->forks->print);
 	philo->temp_time = get_usec(&philo->tv);
 	if (philo->temp_time >= philo->dth_date)
@@ -48,7 +48,7 @@ int	is_dead(t_philo *philo, int mod)
 		sem_close(philo->forks->forks);
 		sem_close(philo->forks->lock);
 		sem_close(philo->forks->print);
-		if (philo->temp_time - philo->check_time >= philo->info->dth_time)
+		if (philo->temp_time >= philo->dth_date + philo->info->dth_time)
 			exit(0);
 		printf("%lld %d died\n", philo->temp_time / 1000, philo->philo_i);
 		exit(1);
