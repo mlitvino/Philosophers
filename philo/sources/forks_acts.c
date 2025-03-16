@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/16 15:42:58 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:51:41 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@
 int	put_forks(t_philo *philo, t_forks *forks, t_info *info)
 {
 	pthread_mutex_lock(&forks[philo->right].fork_lock);
-	philo->forks[philo->right].fork = 1;
 	if (is_dead(philo, philo->info) == -1)
 	{
 		pthread_mutex_unlock(&forks[philo->right].fork_lock);
@@ -87,9 +86,13 @@ int	put_forks(t_philo *philo, t_forks *forks, t_info *info)
 	printf("%lld %d put a fork down\n",
 		philo->temp_time / 1000, philo->philo_id);
 	pthread_mutex_unlock(&info->print_lock);
+	philo->forks[philo->right].fork = 1;
 	pthread_mutex_unlock(&forks[philo->right].fork_lock);
+
+
+
+
 	pthread_mutex_lock(&forks[philo->left].fork_lock);
-	philo->forks[philo->left].fork = 1;
 	if (is_dead(philo, philo->info) == -1)
 	{
 		pthread_mutex_unlock(&forks[philo->left].fork_lock);
@@ -98,6 +101,7 @@ int	put_forks(t_philo *philo, t_forks *forks, t_info *info)
 	printf("%lld %d put a fork down\n",
 		philo->temp_time / 1000, philo->philo_id);
 	pthread_mutex_unlock(&info->print_lock);
+	philo->forks[philo->left].fork = 1;
 	pthread_mutex_unlock(&forks[philo->left].fork_lock);
 	return (0);
 }
