@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/14 13:45:59 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 00:30:59 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,43 @@
 
 int	go_sleep(t_philo *philo, t_info *info)
 {
-	is_dead(philo);
-	philo->eat_date = cur_time(&philo->tv);
-	printf("%lld %d is sleeping\n", philo->eat_date, philo->philo_i);
-	philo->eat_date = philo->dth_date - philo->eat_date - info->slp_time;
-	if (philo->eat_date >= 0)
-		usleep(info->slp_time * 1000);
+	is_dead(philo, 0);
+	printf("%lld %d is sleeping\n", philo->temp_time / 1000, philo->philo_i);
+	sem_post(philo->forks->print);
+	philo->temp_time = philo->dth_date - philo->temp_time - info->slp_time;
+	if (philo->temp_time >= 0)
+		usleep(info->slp_time);
 	else
-		usleep((info->slp_time + philo->eat_date) * 1000);
+		usleep(info->slp_time + philo->temp_time);
 	return (0);
 }
 
 int	go_think(t_philo *philo)
 {
-	is_dead(philo);
-	printf("%lld %d is thinking\n", cur_time(&philo->tv), philo->philo_i);
-	// gettimeofday(&philo->time, NULL);
-	// philo->eat_date = (philo->time.tv_sec * 1000) + (philo->time.tv_usec / 1000);
-	// philo->eat_date = philo->dth_date - philo->eat_date + 15;
-	// if (philo->eat_date >= 0)
-		//usleep(1000);
-	// else
-	// 	usleep(-philo->eat_date);
+	is_dead(philo, 0);
+	printf("%lld %d is thinking\n", philo->temp_time / 1000, philo->philo_i);
+	sem_post(philo->forks->print);
 	return (0);
 }
 
-int	is_dead(t_philo *philo)
+int	is_dead(t_philo *philo, int mod)
 {
-	philo->temp_time = cur_time(&philo->tv);
+	philo->check_time = get_usec(&philo->tv);
+	sem_wait(philo->forks->print);
+	philo->temp_time = get_usec(&philo->tv);
 	if (philo->temp_time >= philo->dth_date)
 	{
-		printf("%lld %d died\n", philo->temp_time, philo->philo_i);
+		if (mod == 1)
+		{
+			sem_post(philo->forks->forks);
+			sem_post(philo->forks->forks);
+		}
+		sem_close(philo->forks->forks);
+		sem_close(philo->forks->lock);
+		sem_close(philo->forks->print);
+		if (philo->temp_time - philo->check_time >= philo->info->dth_time)
+			exit(0);
+		printf("%lld %d died\n", philo->temp_time / 1000, philo->philo_i);
 		exit(1);
 	}
 	return (0);
@@ -52,40 +58,39 @@ int	is_dead(t_philo *philo)
 
 int	go_eat(t_philo *philo, t_info *info, t_my_sem *forks)
 {
-	philo->eat_date = cur_time(&philo->tv);
-	if (philo->eat_date >= philo->dth_date)
+	is_dead(philo, 1);
+	printf("%lld %d is eating\n", philo->temp_time / 1000, philo->philo_i);
+	sem_post(forks->print);
+	if (info->eat_time >= info->dth_time)
+		usleep(info->dth_time);
+	else
 	{
-		sem_post(forks->forks);
-		printf("%lld %d put a fork down\n", philo->eat_date, philo->philo_i);
-		sem_post(forks->forks);
-		printf("%lld %d put a fork down\n", philo->eat_date, philo->philo_i);
-		printf("%lld %d died\n", philo->eat_date, philo->philo_i);
-		exit(1);
+		philo->dth_date = philo->temp_time + info->dth_time;
+		usleep(info->eat_time);
 	}
-	printf("%lld %d is eating\n", philo->eat_date, philo->philo_i);
-	usleep(info->eat_time * 1000);
-	philo->dth_date = philo->eat_date + info->dth_time;
 	return (0);
 }
 
-int	routine(t_philo *philo, t_info *info, t_my_sem *forks)
+int	routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i)
 {
 	int	my_meals;
 
 	my_meals = info->meals;
-	philo->eat_date = cur_time(&philo->tv);
-	philo->dth_date = philo->eat_date + info->dth_time;
+	philo->philo_i = philo_i;
+	philo->dth_date = get_usec(&philo->tv) + info->dth_time;
+	while (info->max_philos == 1)
+		is_dead(philo, 0);
 	while (info->stop_flag == 0 || my_meals-- > 0)
 	{
-		go_sleep(philo, info);
-		go_think(philo);
-		take_forks(philo, forks, info);
+		take_forks(philo, forks);
 		go_eat(philo, info, forks);
 		put_forks(philo, forks);
+		go_sleep(philo, info);
+		go_think(philo);
 	}
-	printf("%lld %d has done\n", cur_time(&philo->tv), philo->philo_i);
+	printf("%lld %d has done\n", get_msec(&philo->tv), philo->philo_i);
 	sem_close(forks->forks);
 	sem_close(forks->lock);
-	free(philo->other);
+	sem_close(forks->print);
 	exit(0);
 }

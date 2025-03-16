@@ -6,7 +6,7 @@
 #    By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/05 16:06:17 by mlitvino          #+#    #+#              #
-#    Updated: 2025/03/13 23:05:22 by mlitvino         ###   ########.fr        #
+#    Updated: 2025/03/16 17:32:59 by mlitvino         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,6 @@ SRC = \
 		routine_bonus.c forks_acts_bonus.c \
 		wait_clean_bonus.c \
 		utils_bonus.c \
-		\
-		\
-		\
-		DEL_bonus.c\
-		\
-		\
-		\
-		\
 
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 INCLD = $(INCLD_DIR)/philo.h_bonus
