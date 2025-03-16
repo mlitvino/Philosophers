@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/16 19:15:42 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 00:52:14 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,18 @@ t_philo	*init_philos(t_philo *philos, t_forks *forks, t_info *info)
 	return (philos);
 }
 
-t_forks	*init_forks(t_philo *philos, t_forks *forks, int max_philos)
+t_forks	*init_forks(t_philo *philos, t_forks *forks, t_info *info)
 {
 	int	i;
 	int	res;
 
-	forks = malloc(sizeof(t_forks) * max_philos);
+	forks = malloc(sizeof(t_forks) * info->max_philos);
 	if (!forks)
 		return (error("Error: malloc failed in init_forks"), NULL);
-	if (pthread_mutex_init(&philos->info->print_lock, NULL) != 0)
+	if (pthread_mutex_init(&info->print_lock, NULL) != 0)
 		return (error("Error: mutex failed init"), free(forks), NULL);
 	i = 0;
-	while (i < max_philos)
+	while (i < info->max_philos)
 	{
 		forks[i].fork = 1;
 		forks[i].queue = 0;

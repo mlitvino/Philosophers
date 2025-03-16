@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/16 19:22:12 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 00:52:45 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int			chck_wait_fork(t_philo *philo, t_forks *forks, int fork_i);
 int			take_forks(t_philo *philo, t_forks *forks);
 
 //inits.c
-t_forks		*init_forks(t_philo *philos, t_forks *forks, int max_philos);
+t_forks		*init_forks(t_philo *philos, t_forks *forks, t_info *info);
 t_philo		*init_philos(t_philo *philos, t_forks *forks, t_info *info);
 int			create_philos(t_philo *philos, t_info *info);
 
