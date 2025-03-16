@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:10:11 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/14 17:38:48 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:31:15 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 int	main(int argc, char *argv[])
 {
 	t_forks	*forks;
-	t_philo *philos;
+	t_philo	*philos;
 	t_info	info;
 
 	forks = NULL;
 	philos = NULL;
-	int temp = 0;
-	while (1)
-	{temp++;}
 	if (argc < 5)
 		return (error("Error: wrong format"), -1);
 	if (check_args(argc, argv, &info) == -1)

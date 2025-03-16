@@ -6,13 +6,12 @@
 #    By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/05 16:06:17 by mlitvino          #+#    #+#              #
-#    Updated: 2025/03/12 00:03:05 by mlitvino         ###   ########.fr        #
+#    Updated: 2025/03/16 15:28:24 by mlitvino         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = cc
+CC = cc -ggdb
 CFLAGS = -I$(INCLD_DIR) -pthread -Wall -Wextra -Werror
-# -Wall -Wextra -Werror
 
 NAME = philo
 
@@ -23,17 +22,8 @@ INCLD_DIR = ./includes
 
 SRC = \
 		main.c check_args.c inits.c \
-		join_clean.c \
 		routine.c forks_acts.c \
-		utils.c \
-		\
-		\
-		\
-		DEL.c\
-		\
-		\
-		\
-		\
+		join_clean.c utils.c \
 
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 INCLD = $(INCLD_DIR)/philo.h

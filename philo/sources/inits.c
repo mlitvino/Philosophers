@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/14 16:29:13 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:31:01 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_forks	*init_forks(t_info *info, t_forks *forks, int max_philos)
 	while (i < max_philos)
 	{
 		forks[i].fork = 1;
+		forks[i].queue = 0;
 		res = pthread_mutex_init(&forks[i].fork_lock, NULL);
 		if (res != 0)
 		{
@@ -69,7 +70,8 @@ int	create_philos(t_philo *philos, t_info *info)
 	i = 0;
 	while (i < info->max_philos)
 	{
-		res = pthread_create(&philos[i].philo_th, NULL, routine, (void *)&philos[i]);
+		res = pthread_create(&philos[i].philo_th, NULL,
+				routine, (void *)&philos[i]);
 		if (res != 0)
 		{
 			info->stop_flag = 1;

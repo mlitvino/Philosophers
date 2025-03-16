@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/14 17:06:12 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:41:18 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_forks
 {
 	bool			fork;
 	pthread_mutex_t	fork_lock;
+	int				queue;
 }	t_forks;
 
 typedef struct s_info
@@ -64,7 +65,7 @@ long		convert_arg(char *argv);
 int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
-int			put_forks(t_philo *philo);
+int			put_forks(t_philo *philo, t_forks *forks, t_info *info);
 int			chck_grap_fork(t_philo *philo, t_forks *forks, int left, int right);
 int			take_forks(t_philo *philo, t_forks *forks);
 
@@ -88,14 +89,7 @@ void		*routine(void *philo);
 void		error(char *message);
 int			ft_strlen(char *message);
 int			ft_isspace(int x);
-long long	cur_time(struct timeval	*tv);
-long long	get_msec(struct timeval	*tv);
-long long	get_usec(struct timeval	*tv);
-
-//DEL.c
-#define Me 4
-void		notake_fork(t_philo *philos);
-void		see_all(t_philo *philos);
-void		*test(void *new);
+long long	get_msec(struct timeval *tv);
+long long	get_usec(struct timeval *tv);
 
 #endif
