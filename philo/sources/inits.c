@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/16 15:31:01 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:15:42 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_philo	*init_philos(t_philo *philos, t_forks *forks, t_info *info)
 	philos = malloc(sizeof(t_philo) * info->max_philos);
 	if (!philos)
 	{
+		destroy_mutex(philos, forks, info->max_philos);
 		free(forks);
 		return (error("Error: malloc failed in init_philos"), NULL);
 	}
@@ -35,16 +36,16 @@ t_philo	*init_philos(t_philo *philos, t_forks *forks, t_info *info)
 	return (philos);
 }
 
-t_forks	*init_forks(t_info *info, t_forks *forks, int max_philos)
+t_forks	*init_forks(t_philo *philos, t_forks *forks, int max_philos)
 {
 	int	i;
 	int	res;
 
-	if (pthread_mutex_init(&info->print_lock, NULL) != 0)
-		return (error("Error: mutex failed init"), NULL);
 	forks = malloc(sizeof(t_forks) * max_philos);
 	if (!forks)
 		return (error("Error: malloc failed in init_forks"), NULL);
+	if (pthread_mutex_init(&philos->info->print_lock, NULL) != 0)
+		return (error("Error: mutex failed init"), free(forks), NULL);
 	i = 0;
 	while (i < max_philos)
 	{
@@ -53,7 +54,7 @@ t_forks	*init_forks(t_info *info, t_forks *forks, int max_philos)
 		res = pthread_mutex_init(&forks[i].fork_lock, NULL);
 		if (res != 0)
 		{
-			destroy_mutex(forks, i);
+			destroy_mutex(philos, forks, i);
 			free(forks);
 			return (error("Error: mutex failed init"), NULL);
 		}

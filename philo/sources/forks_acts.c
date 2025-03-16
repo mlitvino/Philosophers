@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/16 15:51:41 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:21:42 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,6 @@ int	put_forks(t_philo *philo, t_forks *forks, t_info *info)
 	pthread_mutex_unlock(&info->print_lock);
 	philo->forks[philo->right].fork = 1;
 	pthread_mutex_unlock(&forks[philo->right].fork_lock);
-
-
-
-
 	pthread_mutex_lock(&forks[philo->left].fork_lock);
 	if (is_dead(philo, philo->info) == -1)
 	{
