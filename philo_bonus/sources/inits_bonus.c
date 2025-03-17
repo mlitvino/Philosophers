@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 00:15:05 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:25:59 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 void	init_sem(t_philo *philos, t_my_sem *forks, t_info *info)
 {
 	forks->forks = sem_open("/forks_sem", O_CREAT | O_EXCL,
-		S_IRUSR | S_IWUSR | S_IXUSR, info->max_philos + 1);
+		S_IRUSR | S_IWUSR | S_IXUSR, info->max_philos);
 	forks->lock = sem_open("/lock_sem", O_CREAT | O_EXCL,
-		S_IRUSR | S_IWUSR | S_IXUSR, 2);
+		S_IRUSR | S_IWUSR | S_IXUSR, 1);
 	forks->print = sem_open("/print_sem", O_CREAT | O_EXCL,
-			S_IRUSR | S_IWUSR | S_IXUSR, 2);
+			S_IRUSR | S_IWUSR | S_IXUSR, 1);
+	forks->globl_dth = sem_open("/globl_dth_sem", O_CREAT | O_EXCL,
+			S_IRUSR | S_IWUSR | S_IXUSR, 0);
 	if (forks->forks == SEM_FAILED || forks->lock == SEM_FAILED
-	|| forks->print == SEM_FAILED)
+	|| forks->print == SEM_FAILED || forks->globl_dth == SEM_FAILED)
 	{
+		//printf("fail\n"); //del
 		err_clean(philos, forks, 1);
 		error("Error: semaphore creation failed");
 	}
@@ -42,13 +45,43 @@ void	init_sem(t_philo *philos, t_my_sem *forks, t_info *info)
 // 	return (child_list);
 // }
 
+// int	create_philos(t_philo *philos, t_info *info, t_my_sem *forks)
+// {
+// 	int		i;
+// 	//pid_t	*child_list;
+
+// 	i = 0;
+// 	//child_list = NULL;
+// 	while (i < info->max_philos)
+// 	{
+// 		pid_t pid = fork();
+// 		if (pid == -1)
+// 		{
+// 			err_clean(philos, forks, 0);
+// 			error("Error: fork failed child creation");
+// 		}
+// 		else if (pid == 0)
+// 			routine(philos, info, forks, i + 1);
+// 		// else
+// 		// {
+// 		// 	if (!child_list)
+// 		// 		child_list = create_list(info, pid, forks);
+// 		// 	child_list[i] = pid;
+// 		// }
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
 int	create_philos(t_philo *philos, t_info *info, t_my_sem *forks)
 {
 	int		i;
-	//pid_t	*child_list;
 
 	i = 0;
-	//child_list = NULL;
+	philos->forks = forks;
+	philos->info = info;
+	philos->globl_death = 0;
+	philos->taken_fork = 0;
 	while (i < info->max_philos)
 	{
 		pid_t pid = fork();
@@ -59,12 +92,6 @@ int	create_philos(t_philo *philos, t_info *info, t_my_sem *forks)
 		}
 		else if (pid == 0)
 			routine(philos, info, forks, i + 1);
-		// else
-		// {
-		// 	if (!child_list)
-		// 		child_list = create_list(info, pid, forks);
-		// 	child_list[i] = pid;
-		// }
 		i++;
 	}
 	return (0);

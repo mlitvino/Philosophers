@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 00:40:14 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 17:24:03 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-# include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
 # include <limits.h>
@@ -33,6 +32,7 @@ typedef struct s_my_sem
 	sem_t	*forks;
 	sem_t	*lock;
 	sem_t	*print;
+	sem_t	*globl_dth;
 }	t_my_sem;
 
 typedef struct s_info
@@ -42,14 +42,19 @@ typedef struct s_info
 	int		eat_time;
 	int		slp_time;
 	int		meals;
-	bool	stop_flag;
+	int		stop_flag;
 }	t_info;
 
 typedef struct s_philo
 {
 	t_my_sem		*forks;
 	t_info			*info;
+
 	int				philo_i;
+	pthread_t		wait_dth_thrd;
+	pthread_t		wait_fork_thrd;
+	int				globl_death;
+	int				taken_fork;
 
 	long long		dth_date;
 	long long		temp_time;
@@ -88,6 +93,6 @@ long long	get_usec(struct timeval *tv);
 
 //wait_ckean.c
 void		err_clean(t_philo *philos, t_my_sem *forks, int mod);
-void		wait_clean(t_philo *philos, t_my_sem *forks, int max_philos);
+void		wait_clean(t_philo *philos, t_my_sem *forks);
 
 #endif

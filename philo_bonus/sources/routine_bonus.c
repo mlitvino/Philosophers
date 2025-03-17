@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 01:00:55 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:20:51 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ int	go_think(t_philo *philo)
 
 int	is_dead(t_philo *philo, int mod)
 {
-	//philo->check_time = get_usec(&philo->tv);
 	sem_wait(philo->forks->print);
 	philo->temp_time = get_usec(&philo->tv);
-	if (philo->temp_time >= philo->dth_date)
+	if (philo->temp_time >= philo->dth_date || philo->globl_death == 1)
 	{
 		if (mod == 1)
 		{
@@ -48,7 +47,8 @@ int	is_dead(t_philo *philo, int mod)
 		sem_close(philo->forks->forks);
 		sem_close(philo->forks->lock);
 		sem_close(philo->forks->print);
-		if (philo->temp_time >= philo->dth_date + philo->info->dth_time)
+		sem_close(philo->forks->print);
+		if (philo->globl_death == 1)
 			exit(0);
 		printf("%lld %d died\n", philo->temp_time / 1000, philo->philo_i);
 		exit(1);
@@ -71,6 +71,26 @@ int	go_eat(t_philo *philo, t_info *info, t_my_sem *forks)
 	return (0);
 }
 
+void	proc_exit_clean(t_my_sem *forks)
+{
+	sem_close(forks->globl_dth);
+	sem_close(forks->forks);
+	sem_close(forks->lock);
+	sem_close(forks->print);
+}
+
+// void	*wait_death(void *new_philo)
+// {
+// 	t_philo *philo;
+
+// 	philo = (t_philo *)new_philo;
+// 	//   sem_t *forks = sem_open("/forks_sem", 0);
+// 	sem_wait(philo->forks->globl_dth);
+// 	philo->globl_death = 1;
+// 	sem_post(philo->forks->globl_dth);
+// 	return (0);
+// }
+
 int	routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i)
 {
 	int	my_meals;
@@ -78,8 +98,12 @@ int	routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i)
 	my_meals = info->meals;
 	philo->philo_i = philo_i;
 	philo->dth_date = get_usec(&philo->tv) + info->dth_time;
-	while (info->max_philos == 1)
-		is_dead(philo, 0);
+	// if (pthread_create(&philo->wait_dth_thrd, NULL, wait_death, (void *)philo) == -1)
+	// {
+	// 	proc_exit_clean(forks);
+	// 	exit(1);
+	// }
+	// pthread_detach(philo->wait_dth_thrd);
 	while (info->stop_flag == 0 || my_meals-- > 0)
 	{
 		take_forks(philo, forks);
@@ -89,8 +113,8 @@ int	routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i)
 		go_think(philo);
 	}
 	printf("%lld %d has done\n", get_msec(&philo->tv), philo->philo_i);
-	sem_close(forks->forks);
-	sem_close(forks->lock);
-	sem_close(forks->print);
+	sem_wait(forks->globl_dth); // add waiting when proc done
+	sem_post(forks->globl_dth);
+	proc_exit_clean(forks);
 	exit(0);
 }
