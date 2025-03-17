@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/16 19:21:42 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:06:35 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	put_forks(t_philo *philo, t_forks *forks, t_info *info)
 		return (-1);
 	}
 	printf("%lld %d put a fork down\n",
-		philo->temp_time / 1000, philo->philo_id);
+		get_msec(&philo->tv), philo->philo_id);
 	pthread_mutex_unlock(&info->print_lock);
 	philo->forks[philo->right].fork = 1;
 	pthread_mutex_unlock(&forks[philo->right].fork_lock);
@@ -95,7 +95,7 @@ int	put_forks(t_philo *philo, t_forks *forks, t_info *info)
 		return (-1);
 	}
 	printf("%lld %d put a fork down\n",
-		philo->temp_time / 1000, philo->philo_id);
+		get_msec(&philo->tv), philo->philo_id);
 	pthread_mutex_unlock(&info->print_lock);
 	philo->forks[philo->left].fork = 1;
 	pthread_mutex_unlock(&forks[philo->left].fork_lock);
@@ -113,7 +113,7 @@ int	take_fork(t_philo *philo, t_forks *forks, int fork_i)
 		{
 			pthread_mutex_lock(&philo->info->print_lock);
 			printf("%lld %d has taken a fork\n",
-				get_usec(&philo->tv) / 1000, philo->philo_id);
+				get_msec(&philo->tv), philo->philo_id);
 			pthread_mutex_unlock(&philo->info->print_lock);
 			forks[fork_i].fork = 0;
 			forks[fork_i].queue = 0;
@@ -129,7 +129,7 @@ int	chck_wait_fork(t_philo *philo, t_forks *forks, int fork_i)
 {
 	while (take_fork(philo, forks, fork_i) != 1)
 	{
-		usleep(1000);
+		usleep(250);
 		if (is_dead(philo, philo->info) == -1)
 			return (-1);
 		pthread_mutex_unlock(&philo->info->print_lock);

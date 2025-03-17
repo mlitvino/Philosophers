@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 13:27:59 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/16 19:25:55 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:09:58 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	check_args(int argc, char *argv[], t_info *info)
 		info->meals = convert_arg(argv[5]);
 	else
 		info->stop_flag = 0;
-	if (info->max_philos == -1 || info->dth_time == -1 || info->eat_time == -1
-		|| info->slp_time == -1 || info->meals == -1)
+	if (info->max_philos < -1 || info->dth_time < -1 || info->eat_time < -1
+		|| info->slp_time < -1 || info->meals < -1)
 		return (-1);
 	return (0);
 }
