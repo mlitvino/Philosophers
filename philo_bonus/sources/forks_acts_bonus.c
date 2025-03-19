@@ -6,88 +6,92 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 17:45:23 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:49:59 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
+void	*wait_fork_thrd(void *philo_arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)philo_arg;
+	sem_wait(philo->forks->forks);
+
+	sem_wait(philo->forks->chk_fork);
+	philo->taken_fork = 1;
+	sem_post(philo->forks->chk_fork);
+	return (0);
+}
+
 int	put_forks(t_philo *philo, t_my_sem *forks)
 {
-	is_dead(philo, 1);
-	sem_post(forks->forks);
+	if (is_dead(philo, forks) == -1)
+	{
+		proc_exit_clean(philo->forks);
+		exit(1);
+	}
 	sem_post(forks->forks);
 	printf("%lld %d put a fork down\n", get_msec(&philo->tv), philo->philo_i);
+
+	sem_post(forks->forks);
 	printf("%lld %d put a fork down\n", get_msec(&philo->tv), philo->philo_i);
 	sem_post(forks->print);
 	return (0);
 }
 
+void	create_wait_thread(t_philo *philo, t_my_sem * forks)
+{
+	if (pthread_create(&philo->wait_fork_thrd, NULL, wait_fork_thrd, (void *)philo) != 0)
+	{
+		sem_wait(forks->print);
+		sem_post(forks->lock);
+		sem_post(forks->globl_dth);
+		sem_wait(forks->globl_dth);
+		proc_exit_clean(forks);
+		printf("Error: thread creation failed\n");
+		exit(1);
+	}
+	pthread_detach(philo->wait_fork_thrd);
+}
 
-/*
-	create tread check_global_death
-
-	sem_wait_gl_death
-	death = 1
-	sem_post_gl_death
-
-
-	is_dead
-
-		if (death == 1)
-
-*/
-
-/*
-	sem_wait_tread
-	sem_wait()
-	fork = 1;
-*/
+void	take_fork(t_philo *philo, t_my_sem *forks)
+{
+	create_wait_thread(philo, forks);
+	while (1)
+	{
+		sem_wait(philo->forks->chk_fork);
+		if (philo->taken_fork != 0)
+			break;
+		sem_post(philo->forks->chk_fork);
+		if (is_dead(philo, forks) == -1)
+		{
+			sem_post(forks->forks);
+			sem_post(forks->lock);
+			usleep(100);
+			proc_exit_clean(forks);
+			exit(1);
+		}
+		sem_post(forks->print);
+		usleep(250);
+	}
+	sem_post(philo->forks->chk_fork);
+}
 
 int	take_forks(t_philo *philo, t_my_sem *forks)
 {
-	printf("here\n");//DEL
-	is_dead(philo, 0);
-	sem_post(forks->print);
-
 	sem_wait(forks->lock);
-
-	/*
-	create tread sem_wait_tread
-	detach_sem_wait
-	while(fork != 1)
-	{
-		usleep(250)
-		if (is_dead() == -1)
-		{
-			sem_post();
-			exit(1);
-		}
-	}
-	fork = 0
-	*/
-	sem_wait(forks->forks);
+	take_fork(philo, forks);
+	philo->taken_fork = 0;
 	sem_wait(forks->print);
 	printf("%lld %d has taken a fork\n", get_msec(&philo->tv), philo->philo_i);
 	sem_post(forks->print);
-
-	/*
-	create sem_wait_tread
-	while(fork != 1)
-	{
-		usleep(250)
-		if (is_dead() == -1)
-		{
-			sem_post();
-			exit(1);
-		}
-	}
-	*/
-	sem_wait(forks->forks);
+	take_fork(philo, forks);
+	philo->taken_fork = 0;
 	sem_wait(forks->print);
 	printf("%lld %d has taken a fork\n", get_msec(&philo->tv), philo->philo_i);
 	sem_post(forks->print);
-
 	sem_post(forks->lock);
 	return (0);
 }

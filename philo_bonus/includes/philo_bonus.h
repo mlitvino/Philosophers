@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 17:24:03 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:30:04 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_my_sem
 	sem_t	*lock;
 	sem_t	*print;
 	sem_t	*globl_dth;
+	sem_t	*chk_fork;
 }	t_my_sem;
 
 typedef struct s_info
@@ -69,11 +70,12 @@ long		convert_arg(char *argv);
 int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
+void		*wait_fork_thrd(void *philo_arg);
 int			put_forks(t_philo *philo, t_my_sem *forks);
 int			take_forks(t_philo *philo, t_my_sem *forks);
 
 //inits.c
-void		init_sem(t_philo *philos, t_my_sem *forks, t_info *info);
+void		init_sem(t_my_sem *forks, t_info *info);
 t_philo		*init_philos(t_philo *philos, t_my_sem *forks, t_info *info);
 int			create_philos(t_philo *philos, t_info *info, t_my_sem *forks);
 
@@ -81,7 +83,10 @@ int			create_philos(t_philo *philos, t_info *info, t_my_sem *forks);
 int			main(int argc, char *argv[]);
 
 //routine.c
-int			is_dead(t_philo *philo, int mod);
+int			go_sleep(t_philo *philo, t_info *info);
+int			go_think(t_philo *philo);
+int			is_dead(t_philo *philo, t_my_sem *forks);
+int			go_eat(t_philo *philo, t_info *info, t_my_sem *forks);
 int			routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i);
 
 //utils.c
@@ -91,8 +96,10 @@ int			ft_isspace(int x);
 long long	get_msec(struct timeval *tv);
 long long	get_usec(struct timeval *tv);
 
-//wait_ckean.c
-void		err_clean(t_philo *philos, t_my_sem *forks, int mod);
-void		wait_clean(t_philo *philos, t_my_sem *forks);
+//wait_clean.c
+void		*wait_death(void *new_philo);
+void		clean_sem(t_my_sem *forks);
+void		wait_clean(t_my_sem *forks);
+void		proc_exit_clean(t_my_sem *forks);
 
 #endif
