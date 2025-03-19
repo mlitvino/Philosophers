@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 12:47:40 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:58:11 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,18 @@
 void	init_sem(t_my_sem *forks, t_info *info)
 {
 	forks->forks = sem_open("/forks_sem", O_CREAT | O_EXCL,
-		S_IRUSR | S_IWUSR | S_IXUSR, info->max_philos);
+			S_IRUSR | S_IWUSR | S_IXUSR, info->max_philos);
 	forks->lock = sem_open("/lock_sem", O_CREAT | O_EXCL,
-		S_IRUSR | S_IWUSR | S_IXUSR, 1);
+			S_IRUSR | S_IWUSR | S_IXUSR, 1);
 	forks->print = sem_open("/print_sem", O_CREAT | O_EXCL,
 			S_IRUSR | S_IWUSR | S_IXUSR, 1);
 	forks->globl_dth = sem_open("/globl_dth_sem", O_CREAT | O_EXCL,
 			S_IRUSR | S_IWUSR | S_IXUSR, 0);
 	forks->chk_fork = sem_open("/chk_fork_sem", O_CREAT | O_EXCL,
-				S_IRUSR | S_IWUSR | S_IXUSR, 1);
+			S_IRUSR | S_IWUSR | S_IXUSR, 1);
 	if (forks->forks == SEM_FAILED || forks->lock == SEM_FAILED
-	|| forks->print == SEM_FAILED || forks->globl_dth == SEM_FAILED
-	|| forks->chk_fork == SEM_FAILED)
+		|| forks->print == SEM_FAILED || forks->globl_dth == SEM_FAILED
+		|| forks->chk_fork == SEM_FAILED)
 	{
 		clean_sem(forks);
 		error("Error: semaphore creation failed");
@@ -78,6 +78,7 @@ void	init_sem(t_my_sem *forks, t_info *info)
 int	create_philos(t_philo *philos, t_info *info, t_my_sem *forks)
 {
 	int		i;
+	pid_t	pid;
 
 	i = 0;
 	philos->forks = forks;
@@ -86,11 +87,12 @@ int	create_philos(t_philo *philos, t_info *info, t_my_sem *forks)
 	philos->taken_fork = 0;
 	while (i < info->max_philos)
 	{
-		pid_t pid = fork();
+		pid = fork();
 		if (pid == -1)
 		{
 			sem_post(forks->globl_dth);
-			sem_wait(forks->globl_dth);
+			while (waitpid(0, 0, 0) != -1)
+				usleep(100);
 			clean_sem(forks);
 			error("Error: fork failed child creation");
 		}

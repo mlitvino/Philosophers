@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 12:30:04 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 18:01:30 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,12 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
 # include <pthread.h>
 # include <sys/time.h>
 # include <limits.h>
-
 # include <sys/wait.h>
-
 # include <semaphore.h>
 # include <fcntl.h>
-# include <sys/stat.h>
 
 typedef struct s_my_sem
 {
@@ -59,9 +55,7 @@ typedef struct s_philo
 
 	long long		dth_date;
 	long long		temp_time;
-	long long		check_time;
 	struct timeval	tv;
-
 }	t_philo;
 
 //check_args.c
@@ -72,6 +66,8 @@ int			check_args(int argc, char *argv[], t_info *info);
 //forks_acts.c
 void		*wait_fork_thrd(void *philo_arg);
 int			put_forks(t_philo *philo, t_my_sem *forks);
+void		create_wait_thread(t_philo *philo, t_my_sem *forks);
+void		take_fork(t_philo *philo, t_my_sem *forks);
 int			take_forks(t_philo *philo, t_my_sem *forks);
 
 //inits.c
@@ -100,6 +96,6 @@ long long	get_usec(struct timeval *tv);
 void		*wait_death(void *new_philo);
 void		clean_sem(t_my_sem *forks);
 void		wait_clean(t_my_sem *forks);
-void		proc_exit_clean(t_my_sem *forks);
+void		proc_exit_clean(t_my_sem *forks, t_philo *philo);
 
 #endif

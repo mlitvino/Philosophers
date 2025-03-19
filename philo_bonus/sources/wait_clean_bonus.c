@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:34:11 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 12:35:25 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:55:35 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	*wait_death(void *new_philo)
 	return (0);
 }
 
-void	proc_exit_clean(t_my_sem *forks)
+void	proc_exit_clean(t_my_sem *forks, t_philo *philo)
 {
+	pthread_join(philo->wait_dth_thrd, NULL);
 	sem_close(forks->globl_dth);
 	sem_close(forks->forks);
 	sem_close(forks->lock);
@@ -57,10 +58,10 @@ void	wait_clean(t_my_sem *forks)
 		res = waitpid(0, &status, 0);
 		if (res != -1 && WIFEXITED(status) && WEXITSTATUS(status) == 1)
 		{
+			sem_wait(forks->globl_dth);
+			sem_post(forks->globl_dth);
 			sem_post(forks->print);
 		}
 	}
-	sem_post(forks->globl_dth);
-	sem_wait(forks->globl_dth);
 	clean_sem(forks);
 }

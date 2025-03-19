@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 12:49:10 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:57:35 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	go_sleep(t_philo *philo, t_info *info)
 {
 	if (is_dead(philo, philo->forks) == -1)
 	{
-		proc_exit_clean(philo->forks);
+		proc_exit_clean(philo->forks, philo);
 		exit(1);
 	}
 	printf("%lld %d is sleeping\n", get_msec(&philo->tv), philo->philo_i);
@@ -33,7 +33,7 @@ int	go_think(t_philo *philo)
 {
 	if (is_dead(philo, philo->forks) == -1)
 	{
-		proc_exit_clean(philo->forks);
+		proc_exit_clean(philo->forks, philo);
 		exit(1);
 	}
 	printf("%lld %d is thinking\n", get_msec(&philo->tv), philo->philo_i);
@@ -47,12 +47,11 @@ int	is_dead(t_philo *philo, t_my_sem *forks)
 	philo->temp_time = get_usec(&philo->tv);
 	if (philo->temp_time >= philo->dth_date || philo->globl_death == 1)
 	{
-		sem_post(forks->globl_dth);
-		sem_wait(forks->globl_dth);
 		if (philo->globl_death == 1)
-			return(-1);
+			return (-1);
+		sem_post(forks->globl_dth);
 		printf("%lld %d died\n", get_msec(&philo->tv), philo->philo_i);
-		return(-1);
+		return (-1);
 	}
 	return (0);
 }
@@ -61,7 +60,7 @@ int	go_eat(t_philo *philo, t_info *info, t_my_sem *forks)
 {
 	if (is_dead(philo, forks) == -1)
 	{
-		proc_exit_clean(philo->forks);
+		proc_exit_clean(philo->forks, philo);
 		exit(1);
 	}
 	printf("%lld %d is eating\n", get_msec(&philo->tv), philo->philo_i);
@@ -79,15 +78,14 @@ int	go_eat(t_philo *philo, t_info *info, t_my_sem *forks)
 int	routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i)
 {
 	philo->philo_i = philo_i;
-	if (pthread_create(&philo->wait_dth_thrd, NULL, wait_death, (void *)philo) != 0)
+	if (pthread_create(&philo->wait_dth_thrd, NULL,
+			wait_death, (void *)philo) != 0)
 	{
 		sem_wait(forks->print);
 		sem_post(forks->globl_dth);
-		sem_wait(forks->globl_dth);
-		proc_exit_clean(forks);
+		proc_exit_clean(forks, philo);
 		error("Error: thread creation failed");
 	}
-	pthread_detach(philo->wait_dth_thrd);
 	philo->dth_date = get_usec(&philo->tv) + info->dth_time;
 	while (info->stop_flag == 0 || info->meals-- > 0)
 	{
@@ -99,7 +97,6 @@ int	routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i)
 	}
 	usleep(info->eat_time * 2);
 	sem_post(forks->globl_dth);
-	sem_wait(forks->globl_dth);
-	proc_exit_clean(forks);
+	proc_exit_clean(forks, philo);
 	exit(0);
 }
