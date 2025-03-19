@@ -6,18 +6,16 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 00:52:45 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 19:21:56 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# define _DEFAULT_SOURCE
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
 # include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
@@ -66,8 +64,10 @@ int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
 int			put_forks(t_philo *philo, t_forks *forks, t_info *info);
-int			take_fork(t_philo *philo, t_forks *forks, int fork_i);
-int			chck_wait_fork(t_philo *philo, t_forks *forks, int fork_i);
+int			take_both(t_philo *philo, t_forks *forks);
+int			check_fork(t_philo *philo, t_forks *forks, int fork_i, int res);
+//int			chck_wait_fork(t_philo *philo, t_forks *forks, int first, int second);
+int			chck_wait_fork(t_philo *philo, t_forks *forks, int first);
 int			take_forks(t_philo *philo, t_forks *forks);
 
 //inits.c

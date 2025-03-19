@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 13:06:30 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 19:19:10 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	go_think(t_philo *philo, t_info *info)
 		return (-1);
 	printf("%lld %d is thinking\n", get_msec(&philo->tv), philo->philo_id);
 	pthread_mutex_unlock(&info->print_lock);
-	usleep(1000); // perhaps add more to garant enough time in take fork
+	usleep(1000);
 	return (0);
 }
 
