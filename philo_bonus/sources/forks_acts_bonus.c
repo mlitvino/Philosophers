@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 17:59:07 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/19 23:16:38 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	create_wait_thread(t_philo *philo, t_my_sem *forks)
 		sem_wait(forks->print);
 		sem_post(forks->lock);
 		sem_post(forks->globl_dth);
-		sem_wait(forks->globl_dth);
 		proc_exit_clean(forks, philo);
 		printf("Error: thread creation failed\n");
 		exit(1);
@@ -85,14 +84,14 @@ int	take_forks(t_philo *philo, t_my_sem *forks)
 	philo->taken_fork = 0;
 	sem_wait(forks->print);
 	if (philo->globl_death == 1)
-		return (sem_post(forks->print), 0);
+		return (sem_post(forks->print), sem_post(forks->lock), 0);
 	printf("%lld %d has taken a fork\n", get_msec(&philo->tv), philo->philo_i);
 	sem_post(forks->print);
 	take_fork(philo, forks);
 	philo->taken_fork = 0;
 	sem_wait(forks->print);
 	if (philo->globl_death == 1)
-		return (sem_post(forks->print), 0);
+		return (sem_post(forks->print), sem_post(forks->lock), 0);
 	printf("%lld %d has taken a fork\n", get_msec(&philo->tv), philo->philo_i);
 	sem_post(forks->print);
 	sem_post(forks->lock);
