@@ -6,11 +6,30 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/17 00:52:14 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/21 17:26:48 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*single_philo(void *new_philo)
+{
+	t_philo *philo;
+
+	philo = new_philo;
+	philo->dth_date = get_usec(&philo->tv) + philo->info->dth_time;
+	pthread_mutex_lock(&philo->info->print_lock);
+	if (philo->info->death != 1)
+		printf("%lld %d has taken a fork\n",
+			get_msec(&philo->tv), philo->philo_id);
+	pthread_mutex_unlock(&philo->info->print_lock);
+	while (is_dead(philo, philo->info) != -1)
+	{
+		pthread_mutex_unlock(&philo->info->print_lock);
+		usleep(250);
+	}
+	return (0);
+}
 
 t_philo	*init_philos(t_philo *philos, t_forks *forks, t_info *info)
 {

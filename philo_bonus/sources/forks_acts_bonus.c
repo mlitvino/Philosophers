@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 23:16:38 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:50:57 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	put_forks(t_philo *philo, t_my_sem *forks)
 		exit(1);
 	}
 	sem_post(forks->forks);
-	printf("%lld %d put a fork down\n", get_msec(&philo->tv), philo->philo_i);
+	printf("%lld %d put down a fork \n", get_msec(&philo->tv), philo->philo_i);
 	sem_post(forks->forks);
-	printf("%lld %d put a fork down\n", get_msec(&philo->tv), philo->philo_i);
+	printf("%lld %d put down a fork \n", get_msec(&philo->tv), philo->philo_i);
 	sem_post(forks->print);
 	return (0);
 }

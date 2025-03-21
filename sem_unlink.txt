@@ -1,0 +1,5 @@
+	sem_unlink(/forks_sem); // DEL
+	sem_unlink(/lock_sem); // DEL
+	sem_unlink(/print_sem); // DEL
+	sem_unlink(/globl_dth_sem); // DEL
+	sem_unlink(/chk_fork_sem); // DEL

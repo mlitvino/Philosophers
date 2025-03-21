@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 17:57:35 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:56:33 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	routine(t_philo *philo, t_info *info, t_my_sem *forks, int philo_i)
 		go_sleep(philo, info);
 		go_think(philo);
 	}
-	usleep(info->eat_time * 2);
+	usleep(info->dth_time * 2);
 	sem_post(forks->globl_dth);
 	proc_exit_clean(forks, philo);
 	exit(0);
