@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:08:43 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 19:21:56 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:49:59 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_philo
 
 	long long		dth_date;
 	long long		temp_time;
+	int				res;
 	struct timeval	tv;
 }	t_philo;
 
@@ -63,11 +64,10 @@ long		convert_arg(char *argv);
 int			check_args(int argc, char *argv[], t_info *info);
 
 //forks_acts.c
-int			put_forks(t_philo *philo, t_forks *forks, t_info *info);
+int			put_forks(t_philo *philo, t_forks *forks);
 int			take_both(t_philo *philo, t_forks *forks);
 int			check_fork(t_philo *philo, t_forks *forks, int fork_i, int res);
-//int			chck_wait_fork(t_philo *philo, t_forks *forks, int first, int second);
-int			chck_wait_fork(t_philo *philo, t_forks *forks, int first);
+int			chck_wait_fork(t_philo *philo, t_forks *forks, int frst, int scnd);
 int			take_forks(t_philo *philo, t_forks *forks);
 
 //inits.c
