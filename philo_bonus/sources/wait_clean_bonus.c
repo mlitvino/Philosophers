@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:34:11 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/19 22:50:51 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/23 20:56:50 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,16 @@ void	clean_sem(t_my_sem *forks)
 	sem_close(forks->print);
 	sem_close(forks->globl_dth);
 	sem_close(forks->chk_fork);
-	sem_unlink("/forks_sem");
-	sem_unlink("/lock_sem");
-	sem_unlink("/print_sem");
-	sem_unlink("/globl_dth_sem");
-	sem_unlink("/chk_fork_sem");
+	if (forks->forks != SEM_FAILED)
+		sem_unlink("/forks_sem");
+	if (forks->lock != SEM_FAILED)
+		sem_unlink("/lock_sem");
+	if (forks->print != SEM_FAILED)
+		sem_unlink("/print_sem");
+	if (forks->globl_dth != SEM_FAILED)
+		sem_unlink("/globl_dth_sem");
+	if (forks->chk_fork != SEM_FAILED)
+		sem_unlink("/chk_fork_sem");
 }
 
 void	wait_clean(t_my_sem *forks)
