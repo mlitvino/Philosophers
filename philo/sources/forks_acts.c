@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 20:18:25 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/21 12:48:52 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/24 23:32:29 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	check_fork(t_philo *philo, t_forks *forks, int fork_i, int res)
 			forks[fork_i].queue = philo->philo_id;
 		if (forks[fork_i].fork == 1 && res == 1)
 		{
+			forks[fork_i].queue = philo->philo_id;
 			pthread_mutex_unlock(&forks[fork_i].fork_lock);
 			return (1);
 		}
