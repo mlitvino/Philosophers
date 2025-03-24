@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:01:52 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/21 17:26:48 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:36:29 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,12 @@ int	create_philos(t_philo *philos, t_info *info)
 	int	res;
 
 	i = 0;
+	if (info->max_philos == 1)
+	{
+		pthread_create(&philos[i].philo_th, NULL,
+				single_philo, (void *)&philos[i]);
+		return (0);
+	}
 	while (i < info->max_philos)
 	{
 		res = pthread_create(&philos[i].philo_th, NULL,

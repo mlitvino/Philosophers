@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/21 12:49:32 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:41:44 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ int	is_dead(t_philo *philo, t_info *info)
 	{
 		if (info->death == 0)
 		{
-			printf("%lld %d died\n", philo->temp_time / 1000, philo->philo_id);
+			printf("%lld %d died. The time difference: %lld\n",
+				philo->temp_time / 1000, philo->philo_id,
+				(philo->temp_time - philo->dth_date) / 1000);
 		}
 		info->death = 1;
 		pthread_mutex_unlock(&info->print_lock);

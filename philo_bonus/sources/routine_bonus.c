@@ -6,7 +6,7 @@
 /*   By: mlitvino <mlitvino@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:43:03 by mlitvino          #+#    #+#             */
-/*   Updated: 2025/03/21 12:56:33 by mlitvino         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:42:43 by mlitvino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ int	is_dead(t_philo *philo, t_my_sem *forks)
 		if (philo->globl_death == 1)
 			return (-1);
 		sem_post(forks->globl_dth);
-		printf("%lld %d died\n", get_msec(&philo->tv), philo->philo_i);
+			printf("%lld %d died. The time difference: %lld\n",
+				philo->temp_time / 1000, philo->philo_i,
+				(philo->temp_time - philo->dth_date) / 1000);
 		return (-1);
 	}
 	return (0);
