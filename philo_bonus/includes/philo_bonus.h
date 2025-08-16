@@ -72,8 +72,8 @@ void		take_fork(t_philo *philo, t_my_sem *forks);
 int			take_forks(t_philo *philo, t_my_sem *forks);
 
 //inits.c
+void		delete_old_sem();
 void		init_sem(t_my_sem *forks, t_info *info);
-t_philo		*init_philos(t_philo *philos, t_my_sem *forks, t_info *info);
 int			create_philos(t_philo *philos, t_info *info, t_my_sem *forks);
 
 //main.c

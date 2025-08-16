@@ -12,8 +12,18 @@
 
 #include "philo_bonus.h"
 
+void	delete_old_sem()
+{
+	sem_unlink("/forks_sem");
+	sem_unlink("/lock_sem");
+	sem_unlink("/print_sem");
+	sem_unlink("/globl_dth_sem");
+	sem_unlink("/chk_fork_sem");
+}
+
 void	init_sem(t_my_sem *forks, t_info *info)
 {
+	delete_old_sem();
 	forks->forks = sem_open("/forks_sem", O_CREAT | O_EXCL,
 			S_IRUSR | S_IWUSR | S_IXUSR, info->max_philos);
 	forks->lock = sem_open("/lock_sem", O_CREAT | O_EXCL,
